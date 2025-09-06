@@ -146,8 +146,8 @@ export default function ConductoresPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Conductores</h1>
-            <p className="text-gray-600">Gestión de conductores</p>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-gray-900 text-black">Conductores</h1>
+            <p className="text-gray-600 sm:text-gray-600 text-gray-700">Gestión de conductores</p>
           </div>
           <Button onClick={() => setShowFormModal(true)}>
             Nuevo Conductor
@@ -163,7 +163,7 @@ export default function ConductoresPage() {
             <div className="space-y-2">
               {conductores.map((conductor) => (
                 <div key={conductor.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <span className="font-medium text-lg">{conductor.nombre}</span>
+                  <span className="font-medium text-lg text-gray-900 sm:text-gray-900 text-black">{conductor.nombre}</span>
                   <div className="flex space-x-2">
                     <Button
                       size="sm"
@@ -183,7 +183,7 @@ export default function ConductoresPage() {
                 </div>
               ))}
               {conductores.length === 0 && (
-                <p className="text-gray-500 text-center py-8">No hay conductores registrados</p>
+                <p className="text-gray-500 sm:text-gray-500 text-gray-600 text-center py-8">No hay conductores registrados</p>
               )}
             </div>
           </CardContent>
@@ -203,7 +203,7 @@ export default function ConductoresPage() {
               placeholder="Nombre completo del conductor"
             />
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 sm:text-gray-700 text-gray-800 mb-1">
                 Razón Social
               </label>
               <select

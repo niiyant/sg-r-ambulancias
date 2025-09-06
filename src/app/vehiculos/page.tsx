@@ -130,8 +130,8 @@ export default function VehiculosPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Vehículos</h1>
-            <p className="text-gray-600">Gestión de vehículos y ambulancias</p>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-gray-900 text-black">Vehículos</h1>
+            <p className="text-gray-600 sm:text-gray-600 text-gray-700">Gestión de vehículos y ambulancias</p>
           </div>
           <Button onClick={() => setShowFormModal(true)}>
             Nuevo Vehículo

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -40,18 +40,6 @@ export default function RegistrosPage() {
   const [formLoading, setFormLoading] = useState(false);
   const [editingRegistro, setEditingRegistro] = useState<RegistroCompleto | null>(null);
 
-  // Cargar datos iniciales
-  useEffect(() => {
-    loadInitialData();
-  }, []);
-
-  // Cargar registros cuando cambie la fecha seleccionada o los filtros
-  useEffect(() => {
-    if (fechaSeleccionada || filtrosPersonalizados.usarFiltrosPersonalizados) {
-      loadRegistros();
-    }
-  }, [fechaSeleccionada, filtrosPersonalizados]);
-
   const loadInitialData = async () => {
     try {
       setLoading(true);
@@ -74,7 +62,7 @@ export default function RegistrosPage() {
     }
   };
 
-  const loadRegistros = async () => {
+  const loadRegistros = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -110,8 +98,19 @@ export default function RegistrosPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [fechaSeleccionada, filtrosPersonalizados]);
 
+  // Cargar datos iniciales
+  useEffect(() => {
+    loadInitialData();
+  }, []);
+
+  // Cargar registros cuando cambie la fecha seleccionada o los filtros
+  useEffect(() => {
+    if (fechaSeleccionada || filtrosPersonalizados.usarFiltrosPersonalizados) {
+      loadRegistros();
+    }
+  }, [fechaSeleccionada, filtrosPersonalizados.usarFiltrosPersonalizados, loadRegistros]);
 
   const handleCrearRegistro = async (nuevoRegistro: NuevoRegistro) => {
     try {
@@ -257,8 +256,8 @@ export default function RegistrosPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Registros por Turno</h1>
-            <p className="text-sm sm:text-base text-gray-600">Vista de registros organizados por turnos (19:00 - 06:00)</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 sm:text-gray-900 text-black">Registros por Turno</h1>
+            <p className="text-sm sm:text-base text-gray-600 sm:text-gray-600 text-gray-700">Vista de registros organizados por turnos (19:00 - 06:00)</p>
           </div>
           <Button 
             onClick={() => setShowFormModal(true)}
@@ -318,7 +317,7 @@ export default function RegistrosPage() {
                     }))}
                     placeholder="Selecciona una fecha"
                   />
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-gray-500 sm:text-gray-500 text-gray-600">
                     <p>Turno: 19:00 del día anterior a 15:00 del día seleccionado</p>
                   </div>
                 </div>
@@ -412,12 +411,12 @@ export default function RegistrosPage() {
             <CardTitle>
               {filtrosPersonalizados.usarFiltrosPersonalizados ? 'Registros Filtrados' : 'Registros del Turno'}
               {fechaSeleccionada && !filtrosPersonalizados.usarFiltrosPersonalizados && (
-                <span className="text-sm font-normal text-gray-500 ml-2">
+                <span className="text-sm font-normal text-gray-500 sm:text-gray-500 text-gray-600 ml-2">
                   - {new Date(fechaSeleccionada).toLocaleDateString('es-ES')}
                 </span>
               )}
               {filtrosPersonalizados.usarFiltrosPersonalizados && (
-                <span className="text-sm font-normal text-gray-500 ml-2">
+                <span className="text-sm font-normal text-gray-500 sm:text-gray-500 text-gray-600 ml-2">
                   - Filtros personalizados aplicados
                 </span>
               )}

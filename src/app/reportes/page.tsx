@@ -67,8 +67,8 @@ export default function ReportesPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Reportes y Estadísticas</h1>
-          <p className="text-gray-600">Análisis de datos del sistema de ambulancias</p>
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-gray-900 text-black">Reportes y Estadísticas</h1>
+          <p className="text-gray-600 sm:text-gray-600 text-gray-700">Análisis de datos del sistema de ambulancias</p>
         </div>
 
         {/* Filtros de fecha */}
@@ -107,7 +107,7 @@ export default function ReportesPage() {
               <div className="text-3xl font-bold">
                 {registros.length}
               </div>
-              <p className="text-sm text-gray-500">Registros en el sistema</p>
+              <p className="text-sm text-gray-500 sm:text-gray-500 text-gray-600">Registros en el sistema</p>
             </CardContent>
           </Card>
 
@@ -119,7 +119,7 @@ export default function ReportesPage() {
               <div className="text-3xl font-bold">
                 {registros.filter(r => !r.hora_salida).length}
               </div>
-              <p className="text-sm text-gray-500">Sin hora de salida</p>
+              <p className="text-sm text-gray-500 sm:text-gray-500 text-gray-600">Sin hora de salida</p>
             </CardContent>
           </Card>
 
@@ -131,7 +131,7 @@ export default function ReportesPage() {
               <div className="text-3xl font-bold">
                 {registros.filter(r => r.hora_salida).length}
               </div>
-              <p className="text-sm text-gray-500">Con hora de salida</p>
+              <p className="text-sm text-gray-500 sm:text-gray-500 text-gray-600">Con hora de salida</p>
             </CardContent>
           </Card>
         </div>
@@ -150,10 +150,10 @@ export default function ReportesPage() {
                       <h3 className="font-semibold">
                         {registro.vehiculo.marca} - {registro.vehiculo.numero_economico}
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 sm:text-gray-600 text-gray-700">
                         {registro.conductor.nombre} • {registro.asunto.nombre}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 sm:text-gray-500 text-gray-600">
                         {formatDate(registro.fecha)} • Entrada: {registro.hora_entrada}
                         {registro.hora_salida && ` • Salida: ${registro.hora_salida}`}
                       </p>

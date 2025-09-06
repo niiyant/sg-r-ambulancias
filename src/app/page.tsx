@@ -59,8 +59,8 @@ export default function RegistroPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Registro de Vehículos</h1>
-          <p className="text-gray-600">Sistema de gestión para turnos nocturnos y diurnos</p>
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-gray-900 text-black">Registro de Vehículos</h1>
+          <p className="text-gray-600 sm:text-gray-600 text-gray-700">Sistema de gestión para turnos nocturnos y diurnos</p>
         </div>
 
         {/* Formulario súper rápido de registros */}
