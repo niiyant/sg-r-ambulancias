@@ -37,7 +37,8 @@ export const TurnoNocturnoIndicator: React.FC<TurnoNocturnoIndicatorProps> = ({
   const getTurnoInfo = () => {
     const tiempoFormateado = horaActual.toLocaleTimeString('es-ES', {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      hour12: false
     });
 
     if (esTurnoNocturno) {

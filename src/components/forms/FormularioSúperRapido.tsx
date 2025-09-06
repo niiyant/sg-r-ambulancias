@@ -636,7 +636,8 @@ export const FormularioSúperRapido: React.FC<FormularioSúperRapidoProps> = ({
                   <div className="text-xs text-gray-500">
                     Entrada: {new Date(`2000-01-01T${registro.hora_entrada}`).toLocaleTimeString('es-ES', {
                       hour: '2-digit',
-                      minute: '2-digit'
+                      minute: '2-digit',
+                      hour12: false
                     })}
                   </div>
                   <div className="mt-2">
