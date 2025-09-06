@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { registrosService } from '@/services/supabase';
+import { formatTime24h } from '@/utils/timeFormatter';
 
 interface EstadisticasTurnoProps {
   esTurnoNocturno: boolean;
@@ -50,7 +51,7 @@ export const EstadisticasTurno: React.FC<EstadisticasTurnoProps> = ({
             totalRegistros: registros.length,
             registrosActivos: activos.length,
             registrosCompletados: completados.length,
-            ultimoRegistro: ultimoRegistro ? `${ultimoRegistro.vehiculo.numero_economico} - ${new Date(`2000-01-01T${ultimoRegistro.hora_entrada}`).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false })}` : null
+            ultimoRegistro: ultimoRegistro ? `${ultimoRegistro.vehiculo.numero_economico} - ${formatTime24h(ultimoRegistro.hora_entrada)}` : null
           });
         }
       } catch (error) {

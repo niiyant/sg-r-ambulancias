@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/Table';
 import { Button } from '@/components/ui/Button';
 import { RegistroCompleto } from '@/types/database';
+import { formatTime24h } from '@/utils/timeFormatter';
 
 interface RegistrosTurnoTableProps {
   registros: RegistroCompleto[];
@@ -28,12 +29,7 @@ export const RegistrosTurnoTable: React.FC<RegistrosTurnoTableProps> = ({
   loading = false
 }) => {
   const formatTime = (time: string | null) => {
-    if (!time) return '-';
-    return new Date(`2000-01-01T${time}`).toLocaleTimeString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
+    return formatTime24h(time);
   };
 
   const getStatusBadge = (horaSalida: string | null) => {

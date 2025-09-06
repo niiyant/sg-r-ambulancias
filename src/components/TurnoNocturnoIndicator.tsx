@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/Card';
+import { formatCurrentTime24h } from '@/utils/timeFormatter';
 
 interface TurnoNocturnoIndicatorProps {
   onToggleTurno: (esNocturno: boolean) => void;
@@ -11,7 +12,7 @@ export const TurnoNocturnoIndicator: React.FC<TurnoNocturnoIndicatorProps> = ({
   onToggleTurno
 }) => {
   const [esTurnoNocturno, setEsTurnoNocturno] = useState(false);
-  const [horaActual, setHoraActual] = useState(new Date());
+  const [, setHoraActual] = useState(new Date());
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,11 +36,7 @@ export const TurnoNocturnoIndicator: React.FC<TurnoNocturnoIndicatorProps> = ({
   };
 
   const getTurnoInfo = () => {
-    const tiempoFormateado = horaActual.toLocaleTimeString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
+    const tiempoFormateado = formatCurrentTime24h();
 
     if (esTurnoNocturno) {
       return {

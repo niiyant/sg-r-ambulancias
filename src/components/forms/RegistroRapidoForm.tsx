@@ -13,6 +13,7 @@ import {
   RegistroCompleto,
   FormErrors 
 } from '@/types/database';
+import { formatTime24h } from '@/utils/timeFormatter';
 import { vehiculosService, conductoresService, asuntosService, registrosService } from '@/services/supabase';
 import { TurnoNocturnoIndicator } from '@/components/TurnoNocturnoIndicator';
 import { EstadisticasTurno } from '@/components/EstadisticasTurno';
@@ -306,11 +307,7 @@ export const RegistroRapidoForm: React.FC<RegistroRapidoFormProps> = ({
                     {registro.asunto.nombre}
                   </div>
                   <div className="text-xs text-gray-500">
-                    Entrada: {new Date(`2000-01-01T${registro.hora_entrada}`).toLocaleTimeString('es-ES', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: false
-                    })}
+                    Entrada: {formatTime24h(registro.hora_entrada)}
                   </div>
                   <div className="mt-2">
                     <Button
