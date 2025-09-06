@@ -255,12 +255,15 @@ export default function RegistrosPage() {
     <Layout>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Registros por Turno</h1>
-            <p className="text-gray-600">Vista de registros organizados por turnos (19:00 - 06:00)</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Registros por Turno</h1>
+            <p className="text-sm sm:text-base text-gray-600">Vista de registros organizados por turnos (19:00 - 06:00)</p>
           </div>
-          <Button onClick={() => setShowFormModal(true)}>
+          <Button 
+            onClick={() => setShowFormModal(true)}
+            className="w-full sm:w-auto"
+          >
             Nuevo Registro
           </Button>
         </div>
@@ -273,22 +276,25 @@ export default function RegistrosPage() {
           <CardContent>
             <div className="space-y-4">
               {/* Toggle entre filtros de turno y personalizados */}
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <Button
                   variant={!filtrosPersonalizados.usarFiltrosPersonalizados ? "primary" : "outline"}
                   onClick={() => setFiltrosPersonalizados(prev => ({ ...prev, usarFiltrosPersonalizados: false }))}
+                  className="w-full sm:w-auto"
                 >
                   Filtro por Turno
                 </Button>
                 <Button
                   variant={filtrosPersonalizados.usarFiltrosPersonalizados ? "primary" : "outline"}
                   onClick={toggleFiltrosPersonalizados}
+                  className="w-full sm:w-auto"
                 >
                   Filtros Personalizados
                 </Button>
                 <Button
                   variant="outline"
                   onClick={limpiarFiltros}
+                  className="w-full sm:w-auto"
                 >
                   Limpiar Filtros
                 </Button>
@@ -417,14 +423,16 @@ export default function RegistrosPage() {
               )}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <RegistrosTurnoTable
-              registros={registros}
-              onEdit={handleEditRegistro}
-              onDelete={handleEliminarRegistro}
-              onRegistrarSalida={handleRegistrarSalida}
-              loading={loading}
-            />
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
+              <RegistrosTurnoTable
+                registros={registros}
+                onEdit={handleEditRegistro}
+                onDelete={handleEliminarRegistro}
+                onRegistrarSalida={handleRegistrarSalida}
+                loading={loading}
+              />
+            </div>
           </CardContent>
         </Card>
 

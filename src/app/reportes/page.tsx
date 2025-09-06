@@ -6,16 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { 
-  EstadisticasDiarias,
-  EstadisticasVehiculo,
-  EstadisticasConductor 
+  RegistroCompleto
 } from '@/types/database';
-import { estadisticasService } from '@/services/supabase';
+import { registrosService } from '@/services/supabase';
 
 export default function ReportesPage() {
-  const [estadisticasDiarias, setEstadisticasDiarias] = useState<EstadisticasDiarias[]>([]);
-  const [estadisticasVehiculos, setEstadisticasVehiculos] = useState<EstadisticasVehiculo[]>([]);
-  const [estadisticasConductores, setEstadisticasConductores] = useState<EstadisticasConductor[]>([]);
+  const [registros, setRegistros] = useState<RegistroCompleto[]>([]);
   const [loading, setLoading] = useState(true);
   const [fechaDesde, setFechaDesde] = useState('');
   const [fechaHasta, setFechaHasta] = useState('');
@@ -35,20 +31,10 @@ export default function ReportesPage() {
     try {
       setLoading(true);
       
-      const [diariasRes, vehiculosRes, conductoresRes] = await Promise.all([
-        estadisticasService.getDiarias(fechaDesde, fechaHasta),
-        estadisticasService.getPorVehiculo(),
-        estadisticasService.getPorConductor()
-      ]);
-
-      if (diariasRes.success && diariasRes.data) {
-        setEstadisticasDiarias(diariasRes.data);
-      }
-      if (vehiculosRes.success && vehiculosRes.data) {
-        setEstadisticasVehiculos(vehiculosRes.data);
-      }
-      if (conductoresRes.success && conductoresRes.data) {
-        setEstadisticasConductores(conductoresRes.data);
+      const response = await registrosService.getAll();
+      
+      if (response.success && response.data) {
+        setRegistros(response.data);
       }
     } catch (error) {
       console.error('Error cargando reportes:', error);
@@ -119,9 +105,9 @@ export default function ReportesPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">
-                {estadisticasDiarias.reduce((sum, stat) => sum + stat.total_registros, 0)}
+                {registros.length}
               </div>
-              <p className="text-sm text-gray-500">En el período seleccionado</p>
+              <p className="text-sm text-gray-500">Registros en el sistema</p>
             </CardContent>
           </Card>
 
@@ -131,7 +117,7 @@ export default function ReportesPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">
-                {estadisticasDiarias.reduce((sum, stat) => sum + stat.registros_activos, 0)}
+                {registros.filter(r => !r.hora_salida).length}
               </div>
               <p className="text-sm text-gray-500">Sin hora de salida</p>
             </CardContent>
@@ -143,110 +129,44 @@ export default function ReportesPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">
-                {estadisticasDiarias.reduce((sum, stat) => sum + stat.registros_completados, 0)}
+                {registros.filter(r => r.hora_salida).length}
               </div>
               <p className="text-sm text-gray-500">Con hora de salida</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Estadísticas diarias */}
+        {/* Lista de registros recientes */}
         <Card>
           <CardHeader>
-            <CardTitle>Estadísticas Diarias</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-2">Fecha</th>
-                    <th className="text-right p-2">Total</th>
-                    <th className="text-right p-2">Activos</th>
-                    <th className="text-right p-2">Completados</th>
-                    <th className="text-right p-2">% Eficiencia</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {estadisticasDiarias.map((stat) => (
-                    <tr key={stat.fecha} className="border-b">
-                      <td className="p-2">{formatDate(stat.fecha)}</td>
-                      <td className="text-right p-2">{stat.total_registros}</td>
-                      <td className="text-right p-2">{stat.registros_activos}</td>
-                      <td className="text-right p-2">{stat.registros_completados}</td>
-                      <td className="text-right p-2">
-                        {stat.total_registros > 0 
-                          ? Math.round((stat.registros_completados / stat.total_registros) * 100)
-                          : 0}%
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Estadísticas por vehículo */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Estadísticas por Vehículo</CardTitle>
+            <CardTitle>Registros Recientes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {estadisticasVehiculos.map((stat) => (
-                <div key={stat.vehiculo.id} className="border rounded-lg p-4">
+              {registros.slice(0, 10).map((registro) => (
+                <div key={registro.id} className="border rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-semibold">{stat.vehiculo.numero_economico}</h3>
+                      <h3 className="font-semibold">
+                        {registro.vehiculo.marca} - {registro.vehiculo.numero_economico}
+                      </h3>
                       <p className="text-sm text-gray-600">
-                        {stat.vehiculo.marca} - {stat.vehiculo.tipo.nombre}
+                        {registro.conductor.nombre} • {registro.asunto.nombre}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {formatDate(registro.fecha)} • Entrada: {registro.hora_entrada}
+                        {registro.hora_salida && ` • Salida: ${registro.hora_salida}`}
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold">{stat.total_registros}</div>
-                      <div className="text-sm text-gray-500">registros</div>
-                    </div>
-                  </div>
-                  <div className="mt-2 text-sm text-gray-600">
-                    <span>{stat.dias_activos} días activos</span>
-                    {stat.ultimo_registro && (
-                      <span className="ml-4">
-                        Último: {formatDate(stat.ultimo_registro)}
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        registro.hora_salida 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {registro.hora_salida ? 'Completado' : 'Activo'}
                       </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Estadísticas por conductor */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Estadísticas por Conductor</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {estadisticasConductores.map((stat) => (
-                <div key={stat.conductor.id} className="border rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold">{stat.conductor.nombre}</h3>
                     </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold">{stat.total_registros}</div>
-                      <div className="text-sm text-gray-500">registros</div>
-                    </div>
-                  </div>
-                  <div className="mt-2 text-sm text-gray-600">
-                    <span>{stat.dias_trabajados} días trabajados</span>
-                    {stat.ultimo_registro && (
-                      <span className="ml-4">
-                        Último: {formatDate(stat.ultimo_registro)}
-                      </span>
-                    )}
                   </div>
                 </div>
               ))}

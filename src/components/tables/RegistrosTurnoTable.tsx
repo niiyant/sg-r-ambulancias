@@ -65,79 +65,160 @@ export const RegistrosTurnoTable: React.FC<RegistrosTurnoTableProps> = ({
   }
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Marca</TableHead>
-            <TableHead>Tipo Vehículo</TableHead>
-            <TableHead>Número Económico</TableHead>
-            <TableHead>Razón Social</TableHead>
-            <TableHead>Asunto</TableHead>
-            <TableHead>Hora Entrada</TableHead>
-            <TableHead>Hora Salida</TableHead>
-            <TableHead>Nombre Conductor</TableHead>
-            <TableHead>Estado</TableHead>
-            <TableHead>Acciones</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {registros.map((registro) => (
-            <TableRow key={registro.id}>
-              <TableCell className="font-medium">
-                {registro.vehiculo.marca}
-              </TableCell>
-              <TableCell>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  {registro.vehiculo.tipo.nombre}
-                </span>
-              </TableCell>
-              <TableCell className="font-medium">
-                {registro.vehiculo.numero_economico}
-              </TableCell>
-              <TableCell>{registro.vehiculo.razon_social.nombre}</TableCell>
-              <TableCell>{registro.asunto.nombre}</TableCell>
-              <TableCell>{formatTime(registro.hora_entrada)}</TableCell>
-              <TableCell>{formatTime(registro.hora_salida)}</TableCell>
-              <TableCell className="font-medium">
-                {registro.conductor.nombre}
-              </TableCell>
-              <TableCell>{getStatusBadge(registro.hora_salida)}</TableCell>
-              <TableCell>
-                <div className="flex space-x-2">
-                  {!registro.hora_salida && onRegistrarSalida && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => onRegistrarSalida(registro.id)}
-                    >
-                      Registrar Salida
-                    </Button>
-                  )}
-                  {onEdit && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => onEdit(registro)}
-                    >
-                      Editar
-                    </Button>
-                  )}
-                  {onDelete && (
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => onDelete(registro.id)}
-                    >
-                      Eliminar
-                    </Button>
-                  )}
-                </div>
-              </TableCell>
+    <div className="w-full">
+      {/* Vista compacta para pantallas pequeñas y medianas */}
+      <div className="block xl:hidden">
+        {registros.map((registro) => (
+          <div key={registro.id} className="border border-gray-200 rounded-lg p-4 mb-4 bg-white">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-sm">
+              <div>
+                <span className="font-medium text-gray-500">Vehículo:</span>
+                <p className="font-medium">{registro.vehiculo.marca} - {registro.vehiculo.numero_economico}</p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-500">Tipo:</span>
+                <p>
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {registro.vehiculo.tipo.nombre}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-500">Conductor:</span>
+                <p className="truncate">{registro.conductor.nombre}</p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-500">Estado:</span>
+                <p>{getStatusBadge(registro.hora_salida)}</p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-500">Razón Social:</span>
+                <p className="truncate">{registro.vehiculo.razon_social.nombre}</p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-500">Asunto:</span>
+                <p className="truncate">{registro.asunto.nombre}</p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-500">Entrada:</span>
+                <p className="font-mono">{formatTime(registro.hora_entrada)}</p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-500">Salida:</span>
+                <p className="font-mono">{formatTime(registro.hora_salida)}</p>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2 justify-end">
+              {!registro.hora_salida && onRegistrarSalida && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onRegistrarSalida(registro.id)}
+                  className="text-xs px-3 py-1"
+                >
+                  Registrar Salida
+                </Button>
+              )}
+              {onEdit && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onEdit(registro)}
+                  className="text-xs px-3 py-1"
+                >
+                  Editar
+                </Button>
+              )}
+              {onDelete && (
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => onDelete(registro.id)}
+                  className="text-xs px-3 py-1"
+                >
+                  Eliminar
+                </Button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Vista de tabla para pantallas extra grandes */}
+      <div className="hidden xl:block overflow-x-auto">
+        <Table className="min-w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="whitespace-nowrap">Marca</TableHead>
+              <TableHead className="whitespace-nowrap">Tipo Vehículo</TableHead>
+              <TableHead className="whitespace-nowrap">Número Económico</TableHead>
+              <TableHead className="whitespace-nowrap">Razón Social</TableHead>
+              <TableHead className="whitespace-nowrap">Asunto</TableHead>
+              <TableHead className="whitespace-nowrap">Hora Entrada</TableHead>
+              <TableHead className="whitespace-nowrap">Hora Salida</TableHead>
+              <TableHead className="whitespace-nowrap">Nombre Conductor</TableHead>
+              <TableHead className="whitespace-nowrap">Estado</TableHead>
+              <TableHead className="whitespace-nowrap">Acciones</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {registros.map((registro) => (
+              <TableRow key={registro.id}>
+                <TableCell className="font-medium whitespace-nowrap">
+                  {registro.vehiculo.marca}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {registro.vehiculo.tipo.nombre}
+                  </span>
+                </TableCell>
+                <TableCell className="font-medium whitespace-nowrap">
+                  {registro.vehiculo.numero_economico}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">{registro.vehiculo.razon_social.nombre}</TableCell>
+                <TableCell className="whitespace-nowrap">{registro.asunto.nombre}</TableCell>
+                <TableCell className="whitespace-nowrap">{formatTime(registro.hora_entrada)}</TableCell>
+                <TableCell className="whitespace-nowrap">{formatTime(registro.hora_salida)}</TableCell>
+                <TableCell className="font-medium whitespace-nowrap">
+                  {registro.conductor.nombre}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">{getStatusBadge(registro.hora_salida)}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  <div className="flex space-x-2">
+                    {!registro.hora_salida && onRegistrarSalida && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onRegistrarSalida(registro.id)}
+                      >
+                        Registrar Salida
+                      </Button>
+                    )}
+                    {onEdit && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onEdit(registro)}
+                      >
+                        Editar
+                      </Button>
+                    )}
+                    {onDelete && (
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => onDelete(registro.id)}
+                      >
+                        Eliminar
+                      </Button>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };
