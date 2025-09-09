@@ -72,11 +72,11 @@ export const RegistrosTurnoTable: React.FC<RegistrosTurnoTableProps> = ({
           <div key={registro.id} className="border border-gray-200 rounded-lg p-4 mb-4 bg-white">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-sm">
               <div>
-                <span className="font-medium text-gray-500">Vehículo:</span>
-                <p className="font-medium">{registro.vehiculo.marca} - {registro.vehiculo.numero_economico}</p>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Vehículo:</span>
+                <p className="font-medium sm:text-gray-900 text-black">{registro.vehiculo.marca} - {registro.vehiculo.numero_economico}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-500">Tipo:</span>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Tipo:</span>
                 <p>
                   <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                     {registro.vehiculo.tipo.nombre}
@@ -84,28 +84,28 @@ export const RegistrosTurnoTable: React.FC<RegistrosTurnoTableProps> = ({
                 </p>
               </div>
               <div>
-                <span className="font-medium text-gray-500">Conductor:</span>
-                <p className="truncate">{registro.conductor.nombre}</p>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Conductor:</span>
+                <p className="truncate sm:text-gray-900 text-black">{registro.conductor.nombre}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-500">Estado:</span>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Estado:</span>
                 <p>{getStatusBadge(registro.hora_salida)}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-500">Razón Social:</span>
-                <p className="truncate">{registro.vehiculo.razon_social.nombre}</p>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Razón Social:</span>
+                <p className="truncate sm:text-gray-900 text-black">{registro.vehiculo.razon_social.nombre}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-500">Asunto:</span>
-                <p className="truncate">{registro.asunto.nombre}</p>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Asunto:</span>
+                <p className="truncate sm:text-gray-900 text-black">{registro.asunto.nombre}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-500">Entrada:</span>
-                <p className="font-mono">{formatTime(registro.hora_entrada)}</p>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Entrada:</span>
+                <p className="font-mono sm:text-gray-900 text-black">{formatTime(registro.hora_entrada)}</p>
               </div>
               <div>
-                <span className="font-medium text-gray-500">Salida:</span>
-                <p className="font-mono">{formatTime(registro.hora_salida)}</p>
+                <span className="font-medium text-gray-500 sm:text-gray-900 text-black">Salida:</span>
+                <p className="font-mono sm:text-gray-900 text-black">{formatTime(registro.hora_salida)}</p>
               </div>
             </div>
             <div className="mt-4 flex flex-wrap gap-2 justify-end">
